@@ -48,41 +48,7 @@ Reel Flow is a modern short-video sharing platform that enables users to upload,
 
 ---
 
-## 📸 Screenshots
 
-Create a folder named **screenshots** inside your repository and add your screenshots.
-
-Example:
-
-```
-screenshots/
-├── home.png
-├── login.png
-├── profile.png
-├── upload.png
-```
-
-Then add them like this:
-
-```markdown
-### Home Screen
-
-![Home](screenshots/home.png)
-
-### Login Screen
-
-![Login](screenshots/login.png)
-
-### Profile
-
-![Profile](screenshots/profile.png)
-
-### Upload Video
-
-![Upload](screenshots/upload.png)
-```
-
----
 
 ## 🚀 Installation
 
