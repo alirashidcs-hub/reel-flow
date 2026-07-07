@@ -47,7 +47,25 @@ Reel Flow is a modern short-video sharing platform that enables users to upload,
 - CSS3
 
 ---
+# 🚀 How It Works
 
+### 1. User Authentication
+Users can securely create an account or log in using Firebase Authentication.
+
+### 2. Home Feed
+After logging in, users are presented with a scrollable feed of short videos.
+
+### 3. Video Playback
+Videos play smoothly, allowing users to browse content effortlessly.
+
+### 4. Upload Videos
+Users can select videos from their device and upload them to Firebase Storage.
+
+### 5. Cloud Database
+Video information such as titles, user details, and upload timestamps are stored in Cloud Firestore.
+
+### 6. User Profile
+Each user has a personal profile where uploaded videos and account information are displayed.
 
 
 ## 🚀 Installation
@@ -63,6 +81,16 @@ npm start
 ```
 
 ---
+# 🎥 Project Demo
+
+A demonstration video is included in this repository, showcasing:
+
+- User Authentication
+- Home Feed
+- Video Upload
+- Video Playback
+- User Profile
+- Application Navigation
 
 ## 📌 Project Status
 
@@ -81,7 +109,25 @@ Planned:
 - Push Notifications
 - Video Recommendations
 
+
 ---
+
+# 📚 Learning Outcomes
+
+Through this project, I gained practical experience in:
+
+- Flutter Development
+- Dart Programming
+- Firebase Integration
+- Authentication Systems
+- Cloud Firestore
+- Firebase Storage
+- Mobile UI Design
+- State Management
+- Git & GitHub
+
+---
+
 
 ## 👨‍💻 Author
 
