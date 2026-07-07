@@ -1,0 +1,36 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // ─── Videos ──────────────────────────────────────────────────────────────
+    // Authenticated users can upload under their own UID folder; anyone can read.
+    match /videos/{userId}/{videoId} {
+      allow read: if true;
+      allow create: if request.auth != null
+        && request.auth.uid == userId
+        && request.resource.size < 200 * 1024 * 1024   // 200 MB max
+        && request.resource.contentType.matches('video/.*');
+      allow delete: if request.auth != null
+        && request.auth.uid == userId;
+    }
+
+    // ─── Avatars ─────────────────────────────────────────────────────────────
+    match /avatars/{userId}/{fileName} {
+      allow read: if true;
+      allow write: if request.auth != null
+        && request.auth.uid == userId
+        && request.resource.size < 5 * 1024 * 1024     // 5 MB max
+        && request.resource.contentType.matches('image/.*');
+    }
+
+    // ─── Duet videos (merged output) ─────────────────────────────────────────
+    match /duets/{userId}/{videoId} {
+      allow read: if true;
+      allow create: if request.auth != null
+        && request.auth.uid == userId
+        && request.resource.size < 200 * 1024 * 1024;
+      allow delete: if request.auth != null
+        && request.auth.uid == userId;
+    }
+  }
+}

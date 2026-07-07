@@ -1,0 +1,79 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ─── Users ───────────────────────────────────────────────────────────────
+    match /users/{userId} {
+      allow read: if true;
+      allow create: if request.auth != null && request.auth.uid == userId;
+      allow update: if request.auth != null && request.auth.uid == userId;
+      allow delete: if false;
+    }
+
+    // ─── Videos ──────────────────────────────────────────────────────────────
+    match /videos/{videoId} {
+      allow read: if true;
+      allow create: if request.auth != null
+        && request.resource.data.userId == request.auth.uid;
+      allow update: if request.auth != null && (
+        // Owner can edit caption/hashtags
+        request.auth.uid == resource.data.userId
+        ||
+        // Any authenticated user can increment counters only
+        request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['likesCount', 'commentsCount', 'viewsCount'])
+      );
+      allow delete: if request.auth != null
+        && request.auth.uid == resource.data.userId;
+    }
+
+    // ─── Likes ────────────────────────────────────────────────────────────────
+    match /likes/{likeId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // ─── Comments ────────────────────────────────────────────────────────────
+    match /comments/{commentId} {
+      allow read: if true;
+      allow create: if request.auth != null
+        && request.resource.data.userId == request.auth.uid;
+      allow delete: if request.auth != null
+        && request.auth.uid == resource.data.userId;
+      allow update: if false;
+    }
+
+    // ─── Follows ─────────────────────────────────────────────────────────────
+    match /follows/{followId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // ─── Notifications ───────────────────────────────────────────────────────
+    match /notifications/{notifId} {
+      // Only the recipient can read their own notifications
+      allow read: if request.auth != null
+        && request.auth.uid == resource.data.userId;
+      // Any authenticated user can create a notification for someone else
+      allow create: if request.auth != null;
+      // Only the recipient can mark as read / delete
+      allow update, delete: if request.auth != null
+        && request.auth.uid == resource.data.userId;
+    }
+
+    // ─── Sounds ──────────────────────────────────────────────────────────────
+    match /sounds/{soundId} {
+      allow read: if true;
+      allow create: if request.auth != null;
+      allow update: if request.auth != null && (
+        request.auth.uid == resource.data.userId
+        ||
+        // Anyone can increment usageCount
+        request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['usageCount'])
+      );
+      allow delete: if request.auth != null
+        && request.auth.uid == resource.data.userId;
+    }
+  }
+}
